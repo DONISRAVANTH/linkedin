@@ -1,0 +1,18 @@
+{% extends 'base1.html' %}
+
+{% block title %}Update Job Posting{% endblock %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <div class="container">
+    <h2>Update Job Posting</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="text-center mb-5">
+      <button type="submit" class="btn btn-md btn-primary rounded">Update Job Posting</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

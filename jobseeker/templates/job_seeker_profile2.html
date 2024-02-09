@@ -1,0 +1,54 @@
+{% extends 'base2.html' %} {% block title %}Job Seeker Profile{% endblock %} {%
+block content %}
+
+<h2 class="text-center pt-5 text-primary mb-3">JOB SEEKER PROFILE</h2>
+
+{% if job_seeker %}
+<p>
+  <strong class="text-info"><span>NAME:</span> </strong> {{ job_seeker.name }}
+</p>
+<p>
+  <strong class="text-info"><span>EMAIL:</span> </strong> 
+  {{ job_seeker.user.email }}
+</p>
+<p>
+  <strong class="text-info"><span>Bio:</span> </strong> {{ job_seeker.bio }}
+</p>
+<p><strong class="text-info">Skills: </strong> {{ job_seeker.skills }}</p>
+<p>
+  <strong class="text-info">Experience:</strong> {{ job_seeker.experience }}
+</p>
+<p><strong class="text-info">Education: </strong> {{ job_seeker.education }}</p>
+
+{% if job_seeker.resume %}
+<p>
+  <strong class="text-info">Resume :</strong>
+  <a href="{{ job_seeker.resume.url }}" target="_blank">View Resume</a>
+</p>
+{% else %}
+<p>
+  <strong class="text-info">Resume :</strong>
+  <span class="text-danger">No resume available</span>
+</p>
+{% endif %}
+
+<!-- Button to update the profile -->
+<a href="{% url 'update_jobseeker' %}">
+  <center>
+    <button type="button" class="btn btn-primary btn-rounded mb-5">
+      Update Profile
+    </button>
+  </center>
+</a>
+{% else %}
+<!-- If no JobSeeker profile exists, provide a button to create the profile -->
+<a href="{% url 'job_seeker_form' %}">
+  <center>
+    <button type="button" class="btn btn-primary btn-rounded mb-5">
+      Create Profile
+    </button>
+  </center>
+</a>
+{% endif %} 
+
+{% endblock content %}

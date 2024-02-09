@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Student-Dashboard{% endblock %}
+
+{% block main_content %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+<div class="mt-5 mx-auto" style="width: 300px;">
+    <div class="text-center">
+        <h3 class="text-primary">login</h3>
+    </div>    
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="text-center">
+    <button class="btn btn-md btn-primary rounded" type="submit">Login</button>
+    </div>
+</form>
+</div>
+
+{% endblock main_content %}

@@ -1,0 +1,19 @@
+<h2>Job Applications for {{ post.title }}</h2>
+
+<ul>
+    {% for application in job_applications %}
+        <li>{{ application.applicant.username }} - {{ application.applicant.job_title }}</li>
+    {% endfor %}
+</ul>
+
+{% if user.role == 'jobseeker' %}
+    {% if not job_applications.filter(applicant=user).exists %}
+        <div class="mt-3 text-center">
+            <button id="applyBtn" class="btn btn-primary">Apply</button>
+        </div>
+    {% else %}
+        <div class="mt-3 text-center">
+            <button id="applyBtn" class="btn btn-primary" disabled>Applied</button>
+        </div>
+    {% endif %}
+{% endif %}

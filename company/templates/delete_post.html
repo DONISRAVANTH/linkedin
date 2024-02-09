@@ -1,0 +1,14 @@
+{% extends 'base1.html' %}
+
+{% block title %}Delete Job Posting{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-center text-danger pt-3">Delete Job Posting</h2>
+    <p><h4>Are you sure you want to delete the job posting</h4> <b class="display-6">TITLE :</b> <span class="text-danger display-6">"{{ job_posting.title }}"?</span></p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-md btn-primary rounded">Confirm Delete</button>
+    </form>
+  </div>
+{% endblock %}

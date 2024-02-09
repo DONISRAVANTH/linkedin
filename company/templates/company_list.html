@@ -1,0 +1,22 @@
+{% extends 'base1.html' %}
+
+{% block title %}Company List{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-center text-primary mb-5">COMPANY INFORMARION </h2>
+    <div>
+      {% for company in companies %}
+      <p><strong class="text-primary">COMPNAY NAME : </strong><span>{{ company.name }}</span></p>
+      <p><strong class="text-primary">COMPNAY DESCRIPTION : </strong><span>{{ company.description }}</span></p>
+      <p><strong class="text-primary">COMPNAY LOCATION : </strong><span>{{ company.location }}</span></p>
+          <br>
+          <div class="text-center">
+          <a class="btn btn-md btn-primary rounded " href="{% url 'update-company' company.id %}">Update</a>
+          </div>
+      {% empty %}
+        <p>No companies found.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base2.html' %}
+
+{% block title %}home_page{% endblock %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<div class="text-center">
+    <h2>Update JobSeeker Profile</h2>
+</div>
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <span class="text-info">{{ form|crispy }}</span>
+    <center><button type="submit" class="btn btn-primary mb-5 ">Update Profile</button></center>
+</form>
+
+
+
+{% endblock content %}

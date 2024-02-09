@@ -1,0 +1,82 @@
+{% extends 'base2.html' %}
+{% block title %}Read Post{% endblock %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+<div class="mx-auto" style="width: 600px">
+  <div class="display-6 text-primary mt-5 pt-3 text-center">
+    {{ post.title }}
+  </div>
+  <div class="text-center">
+    <i class="text-danger">Posted On{{ post.posted_on|date:'f a' }}</i>
+  </div>
+</div>
+
+<div class="mt-3 mx-auto text-primary">
+  <p>
+    <strong>
+      <h4 class="text-info">COMPANY :</h4>
+    </strong>
+    {{ post.company.name }}
+  </p>
+  <p>
+    <b class="text-info">
+      <h4>JOB DESCRIPTION :</h4> </b
+    >{{ post.job_description }}
+  </p>
+  <p>
+    <b class="text-info">
+      <h4>REQUIREMENTS :</h4> </b
+    >{{post.requirements}}
+  </p>
+</div>
+
+{% if user.role == 'jobseeker' and not applied %}
+<div class="mt-3 text-center" id="applySection">
+    <button id="applyBtn" class="btn btn-primary">Apply</button>
+</div>
+{% else %}
+<div class="mt-3 text-center" id="applySection">
+  <button id="applyBtn" class="btn btn-primary disabled">Applied</button>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var applyBtn = document.getElementById('applyBtn');
+    var applySection = document.getElementById('applySection');
+
+    // Add event listener to the "Apply" button
+    applyBtn.addEventListener('click', function(event) {
+        // Prevent the default behavior of the button (i.e., form submission or link navigation)
+        event.preventDefault();
+
+        // Perform action when the button is clicked (e.g., submit AJAX request)
+        fetch('/jobseeker/apply_job/{{ post.id }}/', {
+            method: 'POST',  // Ensure the method is POST
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update button text and disable it
+                applyBtn.textContent = 'Applied';
+                applyBtn.disabled = true;
+            } else {
+                // Handle error (optional)
+                console.error('Error:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base2.html' %}
+{% block title %}Read Post{% endblock %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% block content %}
+<h2 class="text-center text-primary">JOB SEEKER FORM</h2>
+
+<!-- {% if job_seeker %}
+<form method="post">
+    {% csrf_token %}
+    <span class="text-info">{{ form|crispy }}</span>
+    <center><button type="submit" class="btn btn-primary mb-5">Update Profile</button></center>
+</form>
+{% else %}
+<p class="text-danger"><strong>You don't have a profile. Please fill out the form below :</strong></p>
+<form method="post">
+    {% csrf_token %}
+    <span class="text-info">{{ form|crispy }}</span>
+    <center><button type="submit" class="btn btn-primary mb-5">Create Profile</button></center>
+</form>
+{% endif %} -->
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <span class="text-info">{{ form|crispy }}</span>
+    <center><button type="submit" class="btn btn-primary btn-rounded mb-5">Save Profile</button></center>
+</form>
+
+{% endblock content %}
