@@ -73,10 +73,10 @@ def update_company(request, company_id):
         form = CompanyForm(request.POST, instance=company)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Updated Successfully')
             return redirect('company-list')
     else:
         form = CompanyForm(instance=company)
-
     return render(request, 'update_company.html', {'form': form, 'company': company})
 
 # update and delete 
@@ -95,7 +95,8 @@ def update_job_posting(request, pk):
         form = JobPostingForm(request.POST, instance=job_posting)
         if form.is_valid():
             form.save()
-            return redirect('read-post', pk=pk) 
+            messages.success(request, ' Post Updated Successfully')
+            return redirect('read-page', pk=pk) 
     else:
   
         form = JobPostingForm(instance=job_posting)
@@ -108,7 +109,7 @@ def delete_job_posting(request, pk):
 
   
     if request.user != job_posting.company.company_hr:
-        
+        messages.success(request, ' Post Deleted Successfully')
         return redirect('hr-dashboard')  
 
     if request.method == 'POST':

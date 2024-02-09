@@ -1,8 +1,9 @@
-{% if messages %}
+{%  if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <div style="width: 400px;" class="alert {{ message.tags}} mx-auto mt-3" role="alert">
-        {{ message }}
+    <div style="width: 400px;" class="alert {{message.tags}} alert-dismissible fade show  mx-auto mt-3" role="alert">
+      {{message}}
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
 </ul>

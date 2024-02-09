@@ -40,6 +40,7 @@ def job_seeker_form(request):
             jobseeker = form.save(commit=False)
             jobseeker.user = request.user
             jobseeker.save()
+            messages.success(request, 'Profile Created Successfully')
             return redirect('job_seeker_profile')
     else:
         form = JobSeekerForm()
@@ -55,6 +56,7 @@ def update_job_seeker_form(request):
         form = JobSeekerForm(request.POST, request.FILES, instance=jobseeker)
         if form.is_valid():
             form.save()
+            messages.success(request, ' Profile Updated Successfully')
             return redirect('job_seeker_profile')
     else:
         form = JobSeekerForm(instance=jobseeker)
@@ -111,6 +113,7 @@ def apply_job(request, post_pk):
 
         job_application = JobApplication.objects.create(
             job=job_posting, applicant=job_seeker)
+        messages.success(request, 'Applyed for the job successfully')
         return Response({'status': 'success'})
 
     except Exception as e:

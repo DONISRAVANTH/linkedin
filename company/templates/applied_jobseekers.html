@@ -2,29 +2,37 @@
 {% block title %}Applied Job Seekers{% endblock %}
 {% block content %}
 
-<h1>Applied Job Seekers"{{ job_posting.title }}"</h1>
+<h1 class="text-center text-primary mb-3">Applied Job Seekers</h1>
 
 {% if applied_jobseekers %}
     <ul>
         {% for applicant in applied_jobseekers %}
-            <li>
-                <h2><strong>Username:</strong>{{ applicant.jobseeker.name }}</h2>
+
+        <div class="card border-success mb-4 " >
+            <div class="card-header text-center text-uppercase text-dark ">
+                <strong>Username: {{ applicant.jobseeker.name }}</strong> 
+            </div>
+            <div class="card-body">
+                <!-- <h2><strong>Username:</strong>{{ applicant.jobseeker.name }}</h2> -->
                 <p><strong>Email:</strong> {{ applicant.jobseeker.email }}</p> 
                 <p><strong>Bio:</strong> {{ applicant.jobseeker.bio }}</p>
                 <p><strong>Skills:</strong> {{ applicant.jobseeker.skills }}</p>
                 <p><strong>Experience:</strong> {{ applicant.jobseeker.experience }}</p>
                 <p><strong>Education:</strong> {{ applicant.jobseeker.education }}</p>
                 {% if applicant.jobseeker.resume %}
-                    <p><strong>Resume:</strong> <a href="{{ applicant.jobseeker.resume.url }}">{{ applicant.jobseeker.resume}}</a></p>
+                    <p><strong>Resume:</strong> <a href="http://127.0.0.1:8000/{{ applicant.jobseeker.resume }}">View Resume</a></p>
                 {% else %}
                     <p><strong>Resume:</strong> No resume uploaded</p>
                 {% endif %}
                 <p><strong>Date Applied:</strong> {{ applicant.application.date_applied }}</p>
-                <!-- You can include more details as needed -->
-                <div class="mt-3 text-center">
-                    <button class="btn btn-primary">Hire</button>
+              
+            </div>
+            <div class="card-footer text-muted text-center">
+                <div class=" text-center" >
+                    <button class="btn btn-primary ">HIRE</button>
                 </div>
-            </li>
+            </div>
+          </div>
         {% endfor %}
     </ul>
 {% else %}
