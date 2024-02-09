@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations! You have been hired</title>
+</head>
+<body>
+    <h2>Congratulations!</h2>
+    <p>
+        Dear {{ jobseeker.name }},
+    </p>
+    <p>
+        We are pleased to inform you that you have been hired for the position. 
+        Your application has been successful and we would like to offer you the job.
+    </p>
+    <p>
+        Please find the details of the job below:
+        <ul>
+            <li><strong>Company:</strong> {{ jobseeker.company }}</li>
+            <li><strong>Position:</strong> {{ jobseeker.position }}</li>
+            <!-- Add more job details here as needed -->
+        </ul>
+    </p>
+    <p>
+        If you have any questions or need further information, feel free to contact us.
+    </p>
+    <p>
+        Best regards,<br>
+        Your Company Name
+    </p>
+</body>
+</html>

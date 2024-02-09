@@ -12,6 +12,10 @@ from rest_framework.response import Response
 from jobseeker.models import JobApplication
 from .serializers import JobApplicationSerializer
 from jobseeker.serializers import JobSeekerSerializer
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+from jobseeker.models import JobSeeker
 
 
 
@@ -135,3 +139,38 @@ def applied_jobseekers(request, job_posting_id):
     
     return render(request,'applied_jobseekers.html', {'job_posting': job_posting.id, 'applied_jobseekers': jobseeker_details})
     # return Response({'job_posting': job_posting.id, 'applied_jobseekers': jobseeker_details})
+    
+
+
+from django.http import JsonResponse
+@api_view(['POST'])
+@login_required
+def hire_jobseekers(request):
+    if request.method == 'POST':
+        jobseeker_ids = request.POST.getlist('jobseeker_id')  # Assuming jobseeker_id is passed through the form
+        jobseekers = JobSeeker.objects.filter(id__in=jobseeker_ids)
+
+        if not jobseekers:
+            return JsonResponse({'error': 'No jobseekers selected'}, status=400)
+
+        try:
+            # Loop through each jobseeker and update their status to hired
+            for jobseeker in jobseekers:
+                jobseeker.status = 'hired'
+                jobseeker.save()
+
+                # Send email notification to the hired jobseeker
+                subject = 'Congratulations! You have been hired'
+                message = render_to_string('hire_email_template.html', {'jobseeker': jobseeker})
+                from_email = 'donisravanth@gmail.com'  # Update with your email
+                recipient_list = [jobseeker.email]  # Assuming jobseeker has an email field
+                send_mail(subject=subject, message=message,
+                          from_email=from_email, recipient_list=recipient_list)
+
+            return JsonResponse({'success': True}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    else:
+        return JsonResponse({'error': 'Invalid Request'}, status=400)
