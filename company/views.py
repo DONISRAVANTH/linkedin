@@ -18,6 +18,7 @@ from django.http import JsonResponse
 from jobseeker.models import JobSeeker
 from django.http import HttpResponse
 from django.utils.html import strip_tags
+from jobseeker.models import Notification
 
 
 @login_required
@@ -150,6 +151,15 @@ def hire_jobseeker(request):
         # Update status to "hired"
         job_application.status = 'hired'
         job_application.save()
+        
+         # Create a notification for the hired job seeker
+        # Notification.objects.create(user=job_application.applicant.user,
+        #                             message="Congratulations! You have been hired.")
+        
+        job_title = job_application.job.title
+        message = f"Congratulations! You have been hired for the position of '{job_title}'."
+        Notification.objects.create(user=job_application.applicant.user, message=message)
+
         
         # Send email notification to the hired jobseeker
         subject = 'Congratulations! You have been hired'

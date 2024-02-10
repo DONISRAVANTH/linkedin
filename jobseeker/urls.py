@@ -9,5 +9,5 @@ urlpatterns = [
     path('job-seeker-profile/', views.job_seeker_profile, name='job_seeker_profile'),
     path('update_job_seeker_form/', views.update_job_seeker_form, name='update_jobseeker'),
     path('apply_job/<int:post_pk>/', views.apply_job, name='apply_job'),
-    
+    path('notifications/', views.notification_page, name='notification-page'),
 ]

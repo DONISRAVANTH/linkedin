@@ -119,3 +119,11 @@ def apply_job(request, post_pk):
     except Exception as e:
 
         return Response({'status': 'error', 'message': str(e)}, status=500)
+
+# jobseeker/views.py
+from .models import Notification
+
+def notification_page(request):
+    user = request.user
+    notifications = Notification.objects.filter(user=user)
+    return render(request, 'notification_page.html', {'notifications': notifications})

@@ -1,0 +1,15 @@
+<!-- jobseeker/templates/notification_page.html -->
+{% extends 'base2.html' %}
+
+{% block title %}home_page{% endblock %}
+
+{% block content %}
+    <h1>Notifications</h1>
+    <ul>
+        {% for notification in notifications %}
+            <b><li class="text-success">{{ notification.message }}</li></b>
+        {% empty %}
+            <li class="text-danger">No notifications</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
