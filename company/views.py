@@ -16,7 +16,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from jobseeker.models import JobSeeker
-
+from django.http import HttpResponse
+from django.utils.html import strip_tags
 
 
 @login_required
@@ -141,36 +142,26 @@ def applied_jobseekers(request, job_posting_id):
     # return Response({'job_posting': job_posting.id, 'applied_jobseekers': jobseeker_details})
     
 
-
-from django.http import JsonResponse
-@api_view(['POST'])
-@login_required
-def hire_jobseekers(request):
+def hire_jobseeker(request):
     if request.method == 'POST':
-        jobseeker_ids = request.POST.getlist('jobseeker_id')  # Assuming jobseeker_id is passed through the form
-        jobseekers = JobSeeker.objects.filter(id__in=jobseeker_ids)
+        application_id = request.POST.get('application_id')
+        job_application = get_object_or_404(JobApplication, id=application_id)
 
-        if not jobseekers:
-            return JsonResponse({'error': 'No jobseekers selected'}, status=400)
+        # Update status to "hired"
+        job_application.status = 'hired'
+        job_application.save()
+        
+        # Send email notification to the hired jobseeker
+        subject = 'Congratulations! You have been hired'
+        html_message = render_to_string('hire_email_template.html',{'job_seeker': job_application.applicant})
+        message = strip_tags(html_message)
+        from_email = 'donisravanth@gmail.com'  # Update with your email
+        recipient_list = [job_application.applicant.user.email]
+        send_mail(subject=subject,html_message=html_message, message=message,
+                        from_email=from_email, recipient_list=recipient_list)
 
-        try:
-            # Loop through each jobseeker and update their status to hired
-            for jobseeker in jobseekers:
-                jobseeker.status = 'hired'
-                jobseeker.save()
-
-                # Send email notification to the hired jobseeker
-                subject = 'Congratulations! You have been hired'
-                message = render_to_string('hire_email_template.html', {'jobseeker': jobseeker})
-                from_email = 'donisravanth@gmail.com'  # Update with your email
-                recipient_list = [jobseeker.email]  # Assuming jobseeker has an email field
-                send_mail(subject=subject, message=message,
-                          from_email=from_email, recipient_list=recipient_list)
-
-            return JsonResponse({'success': True}, status=200)
-
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-
+        # return HttpResponse('Job seeker hired successfully and email sent.')
+        messages.success(request, 'Job seeker hired successfully and email sent Successfully')
+        return redirect('my-posts') 
     else:
-        return JsonResponse({'error': 'Invalid Request'}, status=400)
+         return HttpResponse('Invalid request method.')

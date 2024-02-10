@@ -19,6 +19,13 @@ class JobSeeker(models.Model):
     instagram = models.URLField(null=True,blank=True)
     profile = models.ImageField(upload_to='profile/', blank=True, null=True) 
     
+    def __str__(self):
+        return self.user.username  # Or any other field that uniquely identifies the user
+
+class JobApplication(models.Model):
+    job = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
+    date_applied = models.DateTimeField(auto_now_add=True)
     
     STATUS_CHOICES = [
         ('applied', 'Applied'),
@@ -28,14 +35,6 @@ class JobSeeker(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='applied')
     
     def __str__(self):
-        return self.user.username  # Or any other field that uniquely identifies the user
-
-class JobApplication(models.Model):
-    job = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
-    applicant = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
-    date_applied = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"{self.applicant.user.username} - {self.job.title}"
+        return f"{self.applicant.user.username} - {self.job.title} - {self.status}"
 
 

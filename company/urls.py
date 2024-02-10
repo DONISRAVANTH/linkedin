@@ -11,5 +11,8 @@ urlpatterns = [
     path('company/update_job_posting/<int:pk>/', views.update_job_posting, name='update-job-posting'),
     path('company/delete_job_posting/<int:pk>/', views.delete_job_posting, name='delete-job-posting'),
     path('applied_jobseekers/<int:job_posting_id>/', views.applied_jobseekers, name='applied_jobseekers'),
-    path('hire-jobseekers/', views.hire_jobseekers, name='hire-jobseekers'),
+    # path('hire-jobseekers/', views.hire_jobseekers, name='hire-jobseekers'),
+    path('hire_jobseeker/', views.hire_jobseeker, name='hire-jobseeker'),
+
+    # path('hire-jobseeker/', views.hire_jobseeker, name='hire-jobseekers'),
 ]

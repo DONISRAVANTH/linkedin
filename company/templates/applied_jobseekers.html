@@ -28,15 +28,15 @@
               
             </div>
             <div class="card-footer text-muted text-center">
-                <div class="text-center">
-                    
-                        {% if applicant.jobseeker.status == 'hired' %}
-                        <button class="btn btn-primary hire-button disabled" data-jobseeker-id="{{ applicant.jobseeker.id }}">Hired</button>
-                        {% else %}
-                        <button class="btn btn-primary hire-button" data-jobseeker-id="{{ applicant.jobseeker.id }}">Hire</button>
-                        {% endif %}
-                    </button>
-                </div>
+                {% if applicant.application.status == 'hired' %}
+                <button type="submit" class="btn btn-primary disabled">HIRED</button>
+                {% else %}
+                    <form action="{% url 'hire-jobseeker' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{ applicant.application.id }}">
+                        <button type="submit" class="btn btn-primary">HIRE</button>
+                    </form>
+                {% endif %}
             </div>
           </div>
         {% endfor %}
@@ -44,38 +44,5 @@
 {% else %}
     <p>No job seekers have applied for this job posting yet.</p>
 {% endif %}
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- In your template (applied_jobseekers.html) -->
-<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-
-<script>
-$(document).ready(function() {
-    $('.hire-button').click(function() {
-        var jobseekerId = $(this).data('jobseeker-id');
-        var button = $(this);
-
-        // Get CSRF token from hidden input field
-        var csrftoken = $('[name=csrfmiddlewaretoken]').val();
-
-        $.ajax({
-            url: '{% url "hire-jobseekers" %}',
-            type: 'POST',
-            data: {
-                'jobseeker_id': jobseekerId,
-                'csrfmiddlewaretoken': csrftoken
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    button.text('Hired').prop('disabled', true);
-                }
-            }
-        });
-    });
-});
-
-</script>
-    
 
 {% endblock %}
